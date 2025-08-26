@@ -93,6 +93,7 @@
             position: relative;
         }
 
+        /* Foto de fondo con opacidad y sin recortes */
         #letter::before {
             content: '';
             position: absolute;
@@ -100,10 +101,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('IMG-20250718-WA0021.jpg');
-            background-size: contain; /* Ajusta la foto para que se vea completa sin recortes */
-            background-repeat: no-repeat; /* Evita que la imagen se repita */
-            background-position: center; /* Centra la foto en la carta */
+            background-image: url('IMG-20250718-WA0021.jpg'); /* ¡Nombre de tu foto! */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
             opacity: 0.3;
             border-radius: 5px;
             z-index: -1;

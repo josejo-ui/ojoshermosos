@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>¡Una Carta para Ti! ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(to right, #ffafbd, #ffc3a0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            position: relative;
+        }
+
+        #envelope-wrapper {
+            perspective: 1000px;
+            position: relative;
+            width: 300px;
+            height: 200px;
+            cursor: pointer;
+            transition: transform 1s ease-in-out;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+
+        #envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1s ease-in-out;
+        }
+
+        .envelope-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            background-color: #f7e1e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            color: #e91e63;
+            font-weight: bold;
+        }
+
+        .envelope-front {
+            transform: rotateY(0deg);
+            z-index: 2;
+        }
+
+        .envelope-back {
+            transform: rotateY(180deg);
+            background-color: #f7e1e6;
+            z-index: 1;
+        }
+
+        #letter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 90%;
+            height: 90%;
+            transform: translate(-50%, -50%) scale(0.1);
+            opacity: 0;
+            transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 20px;
+            box-sizing: border-box;
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.6;
+            text-align: center;
+            z-index: 3;
+            
+            /* --- ESPACIO PARA LA IMAGEN DE FONDO DE LA CARTA --- */
+            /* Quita los "//" para activar y coloca el nombre de tu archivo */
+            /* background-image: url('foto_de_fondo_carta.jpg'); */
+            background-size: cover; 
+            background-position: center;
+            /* -------------------------------------------------- */
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        /* Aplica la nueva fuente al texto de la carta */
+        #letter p {
+            font-family: 'Georgia', serif;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 80%;
+            font-size: 1em;
+            position: relative;
+            z-index: 4;
+        }
+
+        #envelope-wrapper.open {
+            transform: translateY(-50px);
+        }
+        #envelope-wrapper.open #envelope {
+            transform: rotateY(-180deg);
+        }
+        #envelope-wrapper.open #letter {
+            transform: translate(-50%, -50%) scale(1.5);
+            opacity: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2em;
+            opacity: 0.6;
+            animation: moveAndFade 6s linear forwards;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        @keyframes moveAndFade {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translate(var(--final-x), var(--final-y)) scale(0.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="envelope-wrapper">
+        <div id="envelope">
+            <div class="envelope-face envelope-front">
+                ❤️ Para Angie ❤️
+            </div>
+            <div class="envelope-face envelope-back">
+            </div>
+        </div>
+        <div id="letter">
+            <p>
+                Mi amor, esta carta es solo para ti.<br>
+                Cada día a tu lado es una aventura que no cambiaría por nada en el mundo.<br>
+                Eres mi luz, mi alegría, mi todo.<br>
+                Te amo con cada fibra de mi ser, hoy y siempre.<br><br>
+                Con todo mi cariño,<br>
+                Tu novio José
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const envelopeWrapper = document.getElementById('envelope-wrapper');
+        const body = document.body;
+        
+        const emojis = ['♥️', '❤️', '❣️', '❤️‍🩹', '🌹', '💕', '💞', '💓', '💗', '💖', '💝', '💘', '🩷', '💌'];
+
+        let heartInterval;
+
+        envelopeWrapper.addEventListener('click', () => {
+            envelopeWrapper.classList.toggle('open');
+            if (envelopeWrapper.classList.contains('open')) {
+                startHeartRain();
+            } else {
+                clearInterval(heartInterval);
+                document.querySelectorAll('.heart').forEach(heart => heart.remove());
+            }
+        });
+
+        function startHeartRain() {
+            heartInterval = setInterval(() => {
+                createHeart();
+            }, 100);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('span');
+            heart.classList.add('heart');
+            
+            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+            heart.innerHTML = randomEmoji;
+            
+            const corner = Math.floor(Math.random() * 4);
+            let startX, startY;
+
+            switch(corner) {
+                case 0:
+                    startX = 0;
+                    startY = 0;
+                    break;
+                case 1:
+                    startX = window.innerWidth;
+                    startY = 0;
+                    break;
+                case 2:
+                    startX = 0;
+                    startY = window.innerHeight;
+                    break;
+                case 3:
+                    startX = window.innerWidth;
+                    startY = window.innerHeight;
+                    break;
+            }
+
+            heart.style.left = `${startX}px`;
+            heart.style.top = `${startY}px`;
+            
+            const finalX = Math.random() * window.innerWidth - startX;
+            const finalY = Math.random() * window.innerHeight - startY;
+
+            heart.style.setProperty('--final-x', `${finalX}px`);
+            heart.style.setProperty('--final-y', `${finalY}px`);
+
+            body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+    </script>
+</body>
+</html>

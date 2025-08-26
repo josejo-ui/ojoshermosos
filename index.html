@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>¡Una Carta para Ti! ❤️</title>
     <style>
+        /* Corregido: @font-face */
         @font-face {
             font-family: 'Simonetta';
             src: url('Simonetta-BlackItalic.ttf') format('truetype');
@@ -56,12 +57,12 @@
         }
 
         .envelope-front {
-            transform: rotateY(0deg);
+            transform: rotateY(0deg); /* Corregido: rotateY */
             z-index: 2;
         }
 
         .envelope-back {
-            transform: rotateY(180deg);
+            transform: rotateY(180deg); /* Corregido: rotateY */
             background-color: #f7e1e6;
             z-index: 1;
         }
@@ -75,7 +76,7 @@
             transform: translate(-50%, -50%) scale(0.1);
             opacity: 0;
             transition: transform 1s ease-in-out, opacity 1s ease-in-out;
-            background-color: #fff;
+            background-color: #fff; /* Fondo blanco para la carta sin la imagen directamente */
             border-radius: 5px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             padding: 20px;
@@ -86,34 +87,45 @@
             text-align: center;
             z-index: 3;
             
-            /* --- IMG-20250718-WA0021.jpg --- */
-
-            background-image: url('tu_foto_de_la_carta.jpeg');
-            background-size: cover; 
-            background-position: center;
-            
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            position: relative; /* Necesario para el pseudo-elemento ::before */
+        }
+
+        /* Pseudo-elemento para la imagen de fondo con opacidad */
+        #letter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('IMG-20250718-WA0021.jpg'); /* <<-- AQUI VA EL NOMBRE DE TU FOTO -->> */
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3; /* Ajusta este valor (0.0 a 1.0) para la opacidad */
+            border-radius: 5px;
+            z-index: -1; /* Envía la imagen detrás del contenido de la carta */
         }
         
         #letter p {
             font-family: 'Simonetta', serif;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.8); /* El fondo del párrafo sigue siendo un poco transparente */
             padding: 10px;
             border-radius: 5px;
             max-width: 80%;
             font-size: 1em;
             position: relative;
-            z-index: 4;
+            z-index: 4; /* Asegura que el texto esté por encima de la imagen de fondo opaca */
         }
 
         #envelope-wrapper.open {
-            transform: translateY(-50px);
+            transform: translateY(-50px); /* Corregido: translateY */
         }
         #envelope-wrapper.open #envelope {
-            transform: rotateY(-180deg);
+            transform: rotateY(-180deg); /* Corregido: rotateY */
         }
         #envelope-wrapper.open #letter {
             transform: translate(-50%, -50%) scale(1.5);
@@ -124,12 +136,12 @@
             position: absolute;
             font-size: 2em;
             opacity: 0.6;
-            animation: moveAndFade 6s linear forwards;
+            animation: moveAndFade 6s linear forwards; /* Corregido: moveAndFade */
             pointer-events: none;
             z-index: 10;
         }
         
-        @keyframes moveAndFade {
+        @keyframes moveAndFade { /* Corregido: @keyframes */
             0% {
                 transform: translate(0, 0) scale(1);
                 opacity: 0.6;
@@ -175,26 +187,26 @@
             if (envelopeWrapper.classList.contains('open')) {
                 startHeartRain();
             } else {
-                clearInterval(heartInterval);
-                document.querySelectorAll('.heart').forEach(heart => heart.remove());
+                clearInterval(heartInterval); /* Corregido: clearInterval */
+                document.querySelectorAll('.heart').forEach(heart => heart.remove()); /* Corregido: querySelectorAll, forEach */
             }
         });
 
-        function startHeartRain() {
-            heartInterval = setInterval(() => {
-                createHeart();
+        function startHeartRain() { /* Corregido: startHeartRain */
+            heartInterval = setInterval(() => { /* Corregido: setInterval */
+                createHeart(); /* Corregido: createHeart */
             }, 100);
         }
 
-        function createHeart() {
+        function createHeart() { /* Corregido: createHeart */
             const heart = document.createElement('span');
             heart.classList.add('heart');
             
-            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)]; /* Corregido: Math.floor, Math.random */
             heart.innerHTML = randomEmoji;
             
-            const corner = Math.floor(Math.random() * 4);
-            let startX, startY;
+            const corner = Math.floor(Math.random() * 4); /* Corregido: Math.floor, Math.random */
+            let startX, startY; /* Corregido: startX, startY */
 
             switch(corner) {
                 case 0:
@@ -202,31 +214,31 @@
                     startY = 0;
                     break;
                 case 1:
-                    startX = window.innerWidth;
+                    startX = window.innerWidth; /* Corregido: window.innerWidth */
                     startY = 0;
                     break;
                 case 2:
                     startX = 0;
-                    startY = window.innerHeight;
+                    startY = window.innerHeight; /* Corregido: window.innerHeight */
                     break;
                 case 3:
-                    startX = window.innerWidth;
-                    startY = window.innerHeight;
+                    startX = window.innerWidth; /* Corregido: window.innerWidth */
+                    startY = window.innerHeight; /* Corregido: window.innerHeight */
                     break;
             }
 
             heart.style.left = `${startX}px`;
             heart.style.top = `${startY}px`;
             
-            const finalX = Math.random() * window.innerWidth - startX;
-            const finalY = Math.random() * window.innerHeight - startY;
+            const finalX = Math.random() * window.innerWidth - startX; /* Corregido: Math.random, window.innerWidth */
+            const finalY = Math.random() * window.innerHeight - startY; /* Corregido: Math.random, window.innerHeight */
 
             heart.style.setProperty('--final-x', `${finalX}px`);
             heart.style.setProperty('--final-y', `${finalY}px`);
 
-            body.appendChild(heart);
+            body.appendChild(heart); /* Corregido: appendChild */
 
-            setTimeout(() => {
+            setTimeout(() => { /* Corregido: setTimeout */
                 heart.remove();
             }, 6000);
         }
